@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+<body>
+{% block content %}
+<h1>Контакт</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form-error">{{form.non_filed_errors}}</div><!--for incorrect ligin or password errors-->
+    {% for f in add %}
+    <p>{{f}}</p>
+    <div class="form-errors">{{f.errors}}</div>
+    {% endfor %}
+    <button type="submit">добавить</button>
+</form>
+{% endblock %}
+</body>
+</html>
