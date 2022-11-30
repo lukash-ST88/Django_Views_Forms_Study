@@ -23,6 +23,7 @@ class Author(models.Model):
     email = models.EmailField()
     headshot = models.ImageField(upload_to='author_headshots')
     last_accessed = models.DateTimeField(default=timezone.now)
+    d = models.IntegerField(null=True)
 
     def get_absolute_url(self):
         return reverse('author-derail', kwargs={'pk': self.pk})

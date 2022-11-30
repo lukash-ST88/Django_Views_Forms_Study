@@ -9,5 +9,8 @@ urlpatterns = [
     path('contact/', ContactFormView.as_view()),
     path('author/add/', AuthorCreateView.as_view(), name='author-add'),
     path('author/<int:pk>/', AuthorUpdateView.as_view(), name='author-update'),
-    path('author/<int:pk>/delete/', AuthorDeleteView.as_view(), name='author-delete')
+    path('author/<int:pk>/delete/', AuthorDeleteView.as_view(), name='author-delete'),
+    path('TV', TV.as_view(), name='TVpattern'),
+    path('RV/<int:pk>', RV.as_view(), name='RVpattern'),
+    path('RV2/<int:pk>', RV2.as_view(), name='RV2pattern')
 ]
