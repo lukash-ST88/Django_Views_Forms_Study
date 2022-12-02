@@ -1,7 +1,11 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils import timezone
 from django.urls import reverse
 # Create your models here.
+
+
+
 class Publisher(models.Model):
     name = models.CharField(max_length=30)
     address = models.CharField(max_length=50)
@@ -24,9 +28,15 @@ class Author(models.Model):
     headshot = models.ImageField(upload_to='author_headshots')
     last_accessed = models.DateTimeField(default=timezone.now)
     d = models.IntegerField(null=True)
+    slug = models.SlugField(null=True)
+
+    def save(self, *args, **kwargs): # автоматически создаем слаг при сохранении
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs) #когда в методе save находился аргумент self, возникала ошибка IntegrityError
 
     def get_absolute_url(self):
-        return reverse('author-derail', kwargs={'pk': self.pk})
+        return reverse('DVpattern', kwargs={'slug1': self.slug})
 
     def __str__(self):
         return self.name
@@ -39,3 +49,4 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+

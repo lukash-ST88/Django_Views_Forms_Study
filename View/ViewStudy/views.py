@@ -5,10 +5,11 @@ from django.views.generic import ListView, DetailView
 from .models import *
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from .form import *
+from .forms import *
 from django.views.generic.edit import FormView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.base import TemplateView, RedirectView
+from django.shortcuts import redirect
 
 
 class PublisherListView(ListView):
@@ -39,7 +40,7 @@ class PublisherBookListView(ListView):
 
 class AuthorDetailView(DetailView):
     model = Author  # same as: queryset = author.objects.all()
-    context_object_name = 'authors'
+    context_object_name = 'author'
     template_name = 'ViewStudy/authors.html'
 
     def get_object(self):  # сохраняем время последнего просмотра страницы автора
@@ -95,6 +96,9 @@ class TV(TemplateView):
         return context
 
 
+"""RedirectView"""
+
+
 class RV(RedirectView):
     # url = 'https://www.youtube.com/watch?v=NeQM1c-XCDc'
     pattern_name = 'RV2pattern'
@@ -113,3 +117,113 @@ class RV(RedirectView):
 
 class RV2(TemplateView):
     template_name = 'ViewStudy/RV2.html'
+
+
+"""DetailView"""
+
+
+class DV(DetailView):
+    model = Author
+    template_name = 'ViewStudy/DV.html'
+    context_object_name = 'author'
+    slug_url_kwarg = 'slug1'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        author = Author.objects.filter(slug=self.kwargs['slug1'])
+        author.update(d=F('d') + 1)
+        context['time'] = timezone.now()
+        return context
+
+
+"""ListView"""
+
+
+class LV(ListView):
+    model = Author
+    template_name = 'ViewStudy/LV.html'
+    context_object_name = 'authors'
+    paginate_by = 3
+    paginate_orphans = 1  # /?page=2
+    # queryset = Author.objects.all()[0:2]
+
+    # def get_queryset(self):
+    #     return Author.objects.all()[0:4]
+
+
+class LV2(ListView):
+    model = Author
+    template_name = 'ViewStudy/LV.html'
+    context_object_name = 'authors'
+
+    def get_queryset(self, *args, **kwargs):
+        return Author.objects.filter(book__publisher__country__icontains=self.kwargs['country']).distinct()
+
+
+"""FormView"""
+
+
+class FV(FormView):
+    template_name = 'ViewStudy/FV.html'
+    form_class = FF
+
+    # success_url = reverse_lazy('lVpattern')
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('lVpattern')
+        # return super().form_valid(form) - возвращает success_url
+
+
+class FV2(FormView):
+    template_name = 'ViewStudy/FV2.html'
+    form_class = FF2
+    success_url = reverse_lazy('lVpattern')
+
+    def form_valid(self, form):
+        form.send_email()
+        return super().form_valid(form)
+
+
+"""CreateView"""
+
+
+class CV(CreateView):
+    model = Author
+    fields = ['name', 'salutation', 'email', 'd']
+    # form_class = FF
+    template_name = 'ViewStudy/CV.html'
+    success_url = reverse_lazy('lVpattern')
+
+    def get_initial(self, *args, **kwargs):
+        initial = super().get_initial(**kwargs)
+        initial['name'] = "The author name"
+        initial['salutation'] = 'The author salutation'
+        initial['email'] = "The author's name"
+        initial['d'] = "Here's a number"
+        return initial
+
+
+"""UpdateView"""
+
+
+
+class UV(UpdateView):
+    model = Author
+    # fields = ['name', 'salutation', 'email', 'd']
+    form_class = FF
+    template_name = 'ViewStudy/CV.html'
+    success_url = reverse_lazy('lVpattern')
+    slug_url_kwarg = 'slug2'
+
+
+"""DeleteView"""
+
+class DelV(DeleteView):
+    model = Author
+    template_name = 'ViewStudy/DelV.html'
+    success_url = reverse_lazy('lVpattern')
+    slug_url_kwarg = 'slug3'
+    context_object_name = 'author_to_delete'
+
+
