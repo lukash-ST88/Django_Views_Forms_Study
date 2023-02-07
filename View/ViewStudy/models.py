@@ -38,6 +38,12 @@ class Author(models.Model):
     def get_absolute_url(self):
         return reverse('DVpattern', kwargs={'slug1': self.slug})
 
+    def get_absolute_url2(self):
+        return reverse('UVpattern', kwargs={'slug2': self.slug})
+
+    def get_absolute_url3(self):
+        return reverse('Delpattern', kwargs={'slug3': self.slug})
+
     def __str__(self):
         return self.name
 

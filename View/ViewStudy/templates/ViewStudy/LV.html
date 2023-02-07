@@ -1,14 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'ViewStudy/base.html' %}
+{% block content %}
 {% for auth in authors %}
-<ul>
-    <li>{{auth.name}}</li>
-</ul>
+<div class="row justify-content-md-center">
+
+<div class="card w-50 justify-content-md-center text-center" >
+  <div class="card-header">
+   <i class="bi bi-person-fill"></i>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{auth.name}}</h5>
+    <p class="card-text">{{auth.email}}</p>
+    <a href="{{auth.get_absolute_url}}" class="btn btn-primary">Подробно</a>
+  </div>
+    <div class="card-footer">
+    {{auth.last_accessed|date:"d-m-Y H:i:s"}}
+  </div>
+    <br>
+</div>
+</div>
+
 {% endfor %}
-</body>
-</html>
+
+
+<nav aria-label="Page navigation example">
+    {% if page_obj.has_other_pages %}
+  <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{page_obj.previous_page_number}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+      {% endif %}
+      {% for p in paginator.page_range %}
+      {% if page_obj.number == p %}
+      <li class="page-item"><a class="page-link" href="#" >{{p}}</a></li>
+      {% elif p >= page_obj.number|add:-1 and p <= page_obj.number|add:1 %}
+      <li class="page-item"><a class="page-link" href="?page={{p}}" >{{p}}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{page_obj.next_page_number}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+      {% endif %}
+  </ul>
+    {% endif %}
+</nav>
+{% endblock %}
+
+
+

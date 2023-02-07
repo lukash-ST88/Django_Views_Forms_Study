@@ -1,13 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>DEL</title>
-</head>
-<body>
-<form method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ author_to_delete.name }}"?</p>
-    <input type="submit" value="Confirm">
-</form>
-</body>
-</html>
+{% extends 'ViewStudy/base.html' %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+<div class="container text-center px-10 py-5 my-5">
+  <div class="row">
+      <div class="col-4 col-xs-12 bg-primary text-white">
+      <h1>{{author.name}}</h2>
+      </div>
+      <div class="col-8 col-xs-12 text-primary">
+         <p> Хотите удалить автора?</p>
+    </div>
+  </div>
+    <div class="row">
+        <div class="btn-group" role="group">
+            <input type="submit" value="Да" class="btn btn-outline-primary">
+            <a href="{{author.get_absolute_url}}" class="btn btn-outline-primary">Нет</a>
+        </div>
+    </div>
+</div>
+    </form>
+
+{% endblock %}
+
+
+

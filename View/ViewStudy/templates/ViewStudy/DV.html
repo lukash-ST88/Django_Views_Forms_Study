@@ -1,13 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>DV</title>
-</head>
-<body>
-<h1>{{ author.name }}</h1>
-<p>{{ author.email }}</p>
-<p>count: {{ author.d }}</p>
-<p>Date: {{ time|date }}</p>
-</body>
-</html>
+{% extends 'ViewStudy/base.html' %}
+{% block content %}
+<div class="container text-center px-10 py-5 my-5">
+  <div class="row">
+      <div class="col-4 bg-primary text-white">
+      <h1>{{author.name}}</h2>
+      </div>
+      <div class="col-8">
+          <div class="row">
+            <div class="col text-primary ">
+                <h3>{{author.email}}</h3>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col text-primary">
+                  <h5>count: {{author.d}}</h5>
+              </div>
+              <div class="col text-primary">
+                  <h5>date: {{time|date}}</h5>
+              </div>
+          </div>
+    </div>
+  </div>
+    <div class="row">
+        <div class="btn-group" role="group">
+            <a href="{{author.get_absolute_url2}}" class="btn btn-outline-primary">Изминить</a>
+            <a href="{{author.get_absolute_url3}}" class="btn btn-outline-primary">Удалить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post">
+    {{ form.management_form }}
+    {% for f in form %}
+        <ul>
+            <li>{{ f.title }}</li>
+            <li>{{ f.pub_date }}</li>
+            {% if form.can_delete %}
+                <li>{{ f.DELETE }}</li>
+            {% endif %}
+        </ul>
+    {% endfor %}
+</form>
+</body>
+</html>

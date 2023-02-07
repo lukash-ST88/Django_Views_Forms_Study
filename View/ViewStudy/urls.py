@@ -18,7 +18,12 @@ urlpatterns = [
     path('DV/<slug:slug1>', DV.as_view(), name='DVpattern'),
     path('FV/', FV.as_view()),
     path('FV2/', FV2.as_view()),
-    path('CV/', CV.as_view()),
-    path('DV/<slug:slug2>/UV/', UV.as_view()),
-    path('DV/<slug:slug3>/DelV/', DelV.as_view())
+    path('CV/', CV.as_view(), name='CVpattern'),
+    path('DV/<slug:slug2>/UV/', UV.as_view(), name='UVpattern'),
+    path('DV/<slug:slug3>/DelV/', DelV.as_view(), name='Delpattern'),
+    path('article/', ArticleView.as_view()),
+    path('manage_authors', manage_authors),
+    path('test', test),
+    path('boot', bootstrap),
+    path('search/', Search.as_view(), name='SearchView'),
 ]

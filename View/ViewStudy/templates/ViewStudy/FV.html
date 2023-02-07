@@ -8,11 +8,12 @@
 <body>
 <form method="post">
     {% csrf_token %}
-    {{ form.name}}
-    {{form.salutation}}
-    {{form.email}}
-    {{form.d}}
-    <input type="submit">
+    <div> {{form.non_field_errors}}</div>
+    {% for f in form %}
+    <p>{{f.label_tag}}{{f}}</p>
+    {% endfor %}
+    <input type="submit" value="Подтвердить">
+    <button type="reset">перезагрузить</button>
 </form>
 </body>
 </html>
